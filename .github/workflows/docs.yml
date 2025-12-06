@@ -21,7 +21,7 @@ jobs:
       # 2. Generamos el sitio Web Estático
       # Usamos directamente la imagen de Docker de Avisi (más robusto)
       - name: Generar Sitio HTML
-        uses: docker://avisi/structurizr-site-generatr:latest
+        uses: avisi-cloud/structurizr-site-generatr@v1
         with:
           # Argumentos: generate-site -w [tu archivo] -o [carpeta salida]
           args: generate-site -w workspace.dsl -o public
