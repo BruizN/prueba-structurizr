@@ -4,7 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '**.dsl' # Solo corre si cambias el diagrama
+      - '**.dsl'
+      - '.github/workflows/**' # Para que corra si arreglas este archivo
 
 permissions:
   contents: write
@@ -13,17 +14,19 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # 1. Bajamos tu código
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Esta action hace la magia: convierte el DSL en un sitio web completo
-      - name: Generar Sitio Structurizr
-        uses: avisi-cloud/structurizr-site-generatr-action@v2.3.2
+      # 2. Generamos el sitio Web Estático
+      # Usamos directamente la imagen de Docker de Avisi (más robusto)
+      - name: Generar Sitio HTML
+        uses: docker://avisi/structurizr-site-generatr:latest
         with:
-          workspace-file: workspace.dsl
-          output-dir: public # Carpeta temporal donde guardará el HTML
+          # Argumentos: generate-site -w [tu archivo] -o [carpeta salida]
+          args: generate-site -w workspace.dsl -o public
 
-      # Publicamos esa carpeta en GitHub Pages
+      # 3. Publicamos la carpeta 'public' en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
