@@ -17,15 +17,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # --- NUEVO PASO: CREAR LA CARPETA ---
-      # Creamos la carpeta 'public' explícitamente para que Java no falle
-      - name: Crear carpeta de salida
-        run: mkdir -p public
+      # --- CORRECCIÓN DE PERMISOS ---
+      # Creamos la carpeta Y le damos permisos de escritura a todos (chmod 777)
+      - name: Preparar carpeta public
+        run: |
+          mkdir -p public
+          chmod 777 public
 
       - name: Generar Sitio con Structurizr Site Generatr
         uses: docker://ghcr.io/avisi-cloud/structurizr-site-generatr:latest
         with:
-          # Ahora sí encontrará la carpeta 'public'
           args: generate-site -w workspace.dsl -o public
 
       - name: Deploy to GitHub Pages
