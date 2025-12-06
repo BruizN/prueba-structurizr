@@ -1,12 +1,13 @@
-name: Publicar Structurizr Site
+name: Publicar Documentacion C4
 
 on:
   push:
     branches: [ main ]
     paths:
       - '**.dsl'
-      - '.github/workflows/**' # Para que corra si arreglas este archivo
+      - '.github/workflows/**'
 
+# Permisos necesarios para escribir en la rama gh-pages
 permissions:
   contents: write
 
@@ -14,19 +15,21 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Bajamos tu código
+      # 1. Descarga tu repositorio
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Generamos el sitio Web Estático
-      # Usamos directamente la imagen de Docker de Avisi (más robusto)
-      - name: Generar Sitio HTML
-        uses: avisi-cloud/structurizr-site-generatr@v1
+      # 2. Genera el sitio web usando la imagen OFICIAL que encontraste
+      # Nota el 'docker://ghcr.io/...' esa es la clave que nos faltaba
+      - name: Generar Sitio con Structurizr Site Generatr
+        uses: docker://ghcr.io/avisi-cloud/structurizr-site-generatr:latest
         with:
-          # Argumentos: generate-site -w [tu archivo] -o [carpeta salida]
+          # Aquí usamos los comandos que salen en la sección 'Usage' del texto que mandaste
+          # -w: tu archivo dsl
+          # -o: la carpeta donde se guardará el html (public)
           args: generate-site -w workspace.dsl -o public
 
-      # 3. Publicamos la carpeta 'public' en GitHub Pages
+      # 3. Publica la carpeta 'public' en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
