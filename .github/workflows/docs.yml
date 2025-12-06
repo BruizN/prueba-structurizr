@@ -7,7 +7,6 @@ on:
       - '**.dsl'
       - '.github/workflows/**'
 
-# Permisos necesarios para escribir en la rama gh-pages
 permissions:
   contents: write
 
@@ -15,21 +14,20 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Descarga tu repositorio
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Genera el sitio web usando la imagen OFICIAL que encontraste
-      # Nota el 'docker://ghcr.io/...' esa es la clave que nos faltaba
+      # --- NUEVO PASO: CREAR LA CARPETA ---
+      # Creamos la carpeta 'public' explícitamente para que Java no falle
+      - name: Crear carpeta de salida
+        run: mkdir -p public
+
       - name: Generar Sitio con Structurizr Site Generatr
         uses: docker://ghcr.io/avisi-cloud/structurizr-site-generatr:latest
         with:
-          # Aquí usamos los comandos que salen en la sección 'Usage' del texto que mandaste
-          # -w: tu archivo dsl
-          # -o: la carpeta donde se guardará el html (public)
+          # Ahora sí encontrará la carpeta 'public'
           args: generate-site -w workspace.dsl -o public
 
-      # 3. Publica la carpeta 'public' en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
