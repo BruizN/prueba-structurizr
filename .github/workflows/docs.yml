@@ -1,0 +1,31 @@
+name: Publicar Structurizr Site
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.dsl' # Solo corre si cambias el diagrama
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Esta action hace la magia: convierte el DSL en un sitio web completo
+      - name: Generar Sitio Structurizr
+        uses: avisi-cloud/structurizr-site-generatr-action@v2.3.2
+        with:
+          workspace-file: workspace.dsl
+          output-dir: public # Carpeta temporal donde guardará el HTML
+
+      # Publicamos esa carpeta en GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
