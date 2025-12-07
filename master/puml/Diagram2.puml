@@ -8,14 +8,14 @@ left to right direction
 !include <C4/C4_Context>
 !include <C4/C4_Container>
 
-Person(User, "User", $descr="", $tags="", $link="")
+Person(eMPLOYEES, "eMPLOYEES", $descr="", $tags="", $link="")
 
 System_Boundary("SoftwareSystem_boundary", "Software System", $tags="") {
   Container(SoftwareSystem.WebApplication, "Web Application", $techn="", $descr="", $tags="", $link="")
   ContainerDb(SoftwareSystem.DatabaseSchema, "Database Schema", $techn="", $descr="", $tags="", $link="")
 }
 
-Rel(User, SoftwareSystem.WebApplication, "hola", $techn="", $tags="", $link="")
+Rel(eMPLOYEES, SoftwareSystem.WebApplication, "hola", $techn="", $tags="", $link="")
 Rel(SoftwareSystem.WebApplication, SoftwareSystem.DatabaseSchema, "Reads from and writes to", $techn="", $tags="", $link="")
 
 SHOW_LEGEND(true)

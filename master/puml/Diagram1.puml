@@ -7,10 +7,10 @@ left to right direction
 !include <C4/C4>
 !include <C4/C4_Context>
 
-Person(User, "User", $descr="", $tags="", $link="")
+Person(eMPLOYEES, "eMPLOYEES", $descr="", $tags="", $link="")
 System(SoftwareSystem, "Software System", $descr="", $tags="", $link="")
 
-Rel(User, SoftwareSystem, "hola", $techn="", $tags="", $link="")
+Rel(eMPLOYEES, SoftwareSystem, "hola", $techn="", $tags="", $link="")
 
 SHOW_LEGEND(true)
 @enduml
