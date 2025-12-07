@@ -2,7 +2,7 @@ workspace "Name" "Description" {
 
     !identifiers hierarchical
     model {
-        u = person "User"
+        u = person "eMPLOYEES"
         ss = softwareSystem "Software System" {
             !adrs docs/adr
             wa = container "Web Application"
